@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	
+	
+	
+	
+	<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ mybatis 설정 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+	
+	<!-- 웹이 아닌것들은 root 웹인것들은 servlet -->
+	
+	<!-- 데이터베이스 설정 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin:@192.168.14.52:1521:orcl"></property>
+		<property name="username" value="kitri"></property>
+		<property name="password" value="kitri"></property>
+	</bean>
+	
+	<!-- jdbc 연결을 class를 따로 생성하지 않고 spring에 위임 ex)membermybatis에서 MyBatisConfiguration.class -->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property> <!-- 연동 데이타 소스들 -->
+		<property name="configLocation" value="/WEB-INF/mybatis/configuration.xml"></property> <!-- 설정파일 어디있다. -->
+		<property name="mapperLocations"> <!-- mapperLocations(리스트) mapper는 여러개 쿼리문장 위치 -->
+			<list>
+				<value>/WEB-INF/mybatis/mapper_admin_board.xml</value> <!-- wapcontent가 webapp임 맨처음 /면 webapp부터 -->
+				<value>/WEB-INF/mybatis/mapper_admin_reboard.xml</value>
+				<value>/WEB-INF/mybatis/mapper_common.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- FactoryBean으로부터 sqlSession을 얻어내야뎀. (sqlSession = 인터페이스 / SqlSessionTemplate 구현해놓음 = 디폴트는 없음) -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactoryBean" /> <!-- 생성자 -->
+	</bean>
+	
+	<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ mybatis 설정 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+	
+	
+			
+</beans>

@@ -1,0 +1,58 @@
+
+-- 한 page당 20개씩 정렬
+-- page가 3인 글보기
+-- 오늘쓴글 15:24:12
+-- 오늘쓴글이 아닌것은 19.06.25
+select rownum rn, to_char(logtime,'yy.mm.dd')
+from board b, reboard r
+where b.seq = r.seq
+and b.bcode = 3;
+
+-- 내가 만든 망작
+select rn
+from (select rownum rn, to_char(logtime,'hh24:mi:ss')
+        from board b, reboard r
+        where b.seq = r.seq
+        and b.bcode = 3
+        and  0 = (to_number(to_char(logtime,'yymmdd'))-to_number(to_char(sysdate,'yymmdd'))))
+where rn between 1 and 20;
+
+
+-- 밖에서 dcode하는게 이득
+select c.seq, c.id, c.name, c.email, c.subject, c.content, c.hit, c.bcode, 
+        decode(to_char(c.logtime,'yyddmm'), 
+            to_char(sysdate,'yymmdd'), to_char(c.logtime,'hh24:mi:ss'),
+            to_char(c.logtime,'yy.mm.dd')) logtime,
+       c.rseq, c.ref, c.lev, c.step, c.pseq, c.reply
+from (
+    select rownum m, total.*
+    from (select b.seq, b.id, b.name, b.email, b.subject, b.content, b.hit, b.bcode, b.logtime,
+                r.rseq, r.ref, r.lev, r.step, r.pseq, r.reply
+            from board b, reboard r
+            where b.seq = r.seq
+            and b.bcode =3
+            order by seq desc) total
+    where rownum <= 8 * 20 ) c
+where c.m > 8 * 20 - 20;
+
+
+
+-------------------------------
+
+select c.seq, c.name, c.id, c.email, c.subject, c.content, c.hit, 
+    decode(to_char(c.logtime,'yymmdd'), to_char(sysdate,'yymmdd'), 
+            to_char(c.logtime,'hh24:mi:ss'), to_char(c.logtime,'yy.mm.dd')) logtime, 
+            c.bcode, c.rseq, c.ref, c.lev, c.step, c.pseq, c.reply
+from(
+    select rownum m, total.*
+    from(
+        select b.seq, b.name, b.id, b.email, b.subject, b.content, b.hit, b.logtime, b.bcode,
+               r.rseq, r.ref, r.lev, r.step, r.pseq, r.reply
+        from board b, reboard r
+        where b.seq = r.seq
+        and b.bcode = 3
+        order by seq desc
+        ) total
+    where rownum <=10 * 20
+    ) c
+where c.m > 10 * 20 - 20;

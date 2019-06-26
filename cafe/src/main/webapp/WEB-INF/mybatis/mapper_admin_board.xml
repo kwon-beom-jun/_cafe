@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+
+
+<!-- root엘리먼트가 있어야뎀. namespace는 대체적으로 인터페이스 이름을 따라가기로 함.-->
+<mapper namespace="com.kitri.cafe.admin.board.dao.BoardAdminDao">
+	<!-- 메소드 이름과 값과 리턴타입 resultType이 알리아스가 configuration에서 안정해져 있으면 com.kitri.cate.admin.model.BoardListDto 쓰는것? -->
+	<select id="getBoardMenuList" parameterType="int" resultType="boardListDto">
+	select bl.bcode, bl.bname, bl.btype, c.ccode, c.cname,
+    decode(bl.btype, 5, 'reboard',
+                    6, 'album',
+                    7, 'bbs', 'board') control
+	from board_list bl, category c
+	where bl.ccode = c.ccode
+	order by c.ccode asc, bl.bcode asc
+	</select> 
+</mapper> 
+
+
+
+

@@ -1,0 +1,69 @@
+cafe
+
+- src
+
+	- com.kitri.cafe.admin.board.controller
+		BoardAdminController.java
+	- com.kitri.cafe.admin.board.dao
+		BoardAdminDao.java (I)	// mybatis는 임플만 있어도 됨.
+	- com.kitri.cafe.admin.board.dao.model
+		BoardTypeDto.java
+		CategoryDto.java
+		BoardListDto.java
+	- com.kitri.cafe.admin.board.service
+		BoardAdminService.java (I)
+		BoardAdminServiceImpl.java
+		
+	- com.kitri.cafe.board.controller
+		AlbumController.java
+		BbsController.java
+		BoardController.java
+		MemberController.java
+		ReboardController.java
+	- com.kitri.cafe.board.dao
+		AlbumDao.java (I)
+		BdsDao.java (I)
+		BoardDao.java (I)
+		MemoDao.java (I)
+		ReboardDaoDao.java (I)
+	- com.kitri.cafe.board.dao.model
+		AlbumDto.java
+		BbsDto.java
+		BoardDao.java
+		MemoDao.java
+		ReboardDaoDao.java
+	- com.kitri.cafe.service
+		AlbumService.java(I)
+        AlbumServiceImpl.java
+        BbsService.java(I)
+        BbsServiceImpl.java
+        BoardService.java(I)
+        BoardServiceImpl.java
+        MemoService.java(I)
+        MemoServiceImpl.java
+        ReboardService.java(I)
+        ReboardServiceImpl.java
+	
+	- com.kitri.cafe.common.dao
+		CommonDao.java (I)	
+	- com.kitri.cafe.common.service
+		CommonService.java (I)
+		CommonServiceImpl.java
+		
+	- com.kitri.cafe.member.model    // 회원제로 할 것임.
+		MemberDto.java
+		
+	- com.kitri.cafe.util
+		CafeConstance.java
+		PageNavigation.java
+		
+- webapp
+	index.jsp
+	
+	resources폴더
+		- css, js, img, ...
+	
+	META-INF	
+		- context.xml : connection pool에 대한 설정.
+	WEB-INF
+		- views : jsp
