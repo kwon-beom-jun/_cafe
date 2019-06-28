@@ -38,13 +38,51 @@
 	        from board b, reboard r
 	        where b.seq = r.seq
 	        and b.bcode = #{bcode}
-	        order by seq desc
+	        <!-- mapper_common의 총 페이지 구할때도 if문 해줘야뎀 -->
+	        <!-- 주소창에 word에 장난질쳐도 안되게 하는법은 다 if문 돌려줘야뎀. -->
+	        <if test="word != null and word != ''">
+	        	<if test="key == 'subject'">
+	        	and b.subject like '%'||#{word}||'%'
+	        	</if>
+	        	<if test="key != 'subject'">
+	        	and b.${key} = #{word} <!-- #{key}는 안됌 치환변수로 안뎀. -->
+	        	</if>
+	        </if>
+	        <!-- 정렬바꿈 -->
+	        <!-- order by seq desc -->
+	        <!-- 뒤에 step 붙이면? -->
+	        order by ref desc, step
 	        ) total
 	    where rownum &lt;= #{end}
 	    ) c
 	where c.m &gt; #{start}
 	</select>
 	
+	
+	
+	
+	<!-- 댓글작성 -->
+	<update id="updateStep" parameterType="reboardDto">
+	update reboard
+	set step = step + 1
+	where ref = #{ref}
+	and step > #{step}	
+	</update>
+	
+	<insert id="replyArticle" parameterType="reboardDto">
+	insert all
+		into board (seq, id, name, email, subject, content, hit, logtime, bcode)
+		values (#{seq}, #{id}, #{name}, #{email}, #{subject}, #{content}, 0, sysdate, #{bcode})
+		into reboard (rseq, seq, ref, lev, step, pseq, reply)
+		values (reboard_rseq.nextval, #{seq}, #{ref}, #{lev} + 1, #{step} + 1, #{pseq}, 0)
+	select * from dual
+	</insert>
+	
+	<update id="updateReply" parameterType="int">
+	update reboard
+	set reply = reply + 1
+	where seq = #{pseq}
+	</update>
 	
 	
 	

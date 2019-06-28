@@ -6,9 +6,11 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kitri.cafe.board.dao.ReboardDao;
 import com.kitri.cafe.board.model.ReboardDto;
+import com.kitri.cafe.common.dao.CommonDao;
 import com.kitri.cafe.util.CafeConstance;
 import com.kitri.cafe.util.NumberCheck;
 
@@ -41,11 +43,19 @@ public class ReboardServiceImpl implements ReboardService {
 	}
 
 	@Override
+	@Transactional //알아서 트랜잭션해줌 root에서 관리.
 	public ReboardDto viewArticle(int seq) {
+		sqlSession.getMapper(CommonDao.class).updateHit(seq); // mapper_common 마이바티스 설정해주기
 		ReboardDto reboardDto = sqlSession.getMapper(ReboardDao.class).viewArticle(seq);
 		// 엔터키 적용해서 보내기.
 		reboardDto.setContent(reboardDto.getContent().replace("\n", "<br>"));
 		return reboardDto;
+	}
+
+	@Override
+	@Transactional //댓글 페이지 이동 조회수 증가 등 x //알아서 롤백되는것인가?
+	public ReboardDto getArticle(int seq) {
+		return sqlSession.getMapper(ReboardDao.class).viewArticle(seq);
 	}
 
 	@Override
@@ -56,6 +66,19 @@ public class ReboardServiceImpl implements ReboardService {
 	@Override
 	public void deleteArticle(int seq) {
 
+	}
+
+	@Override
+	@Transactional 
+	public int replyArticle(ReboardDto reboardDto) {
+		
+		//update, insert, update순
+		ReboardDao reboardDao = sqlSession.getMapper(ReboardDao.class);
+		reboardDao.updateStep(reboardDto);
+		reboardDao.replyArticle(reboardDto);
+		reboardDao.updateReply(reboardDto.getPseq());
+		
+		return reboardDto.getSeq();
 	}
 
 }
