@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+<beans:beans xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
@@ -10,12 +10,14 @@
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
-	<annotation-driven />
+	<mvc:annotation-driven />
+	<!-- ??? -->
+	<mvc:default-servlet-handler/>
 
 	<!-- 주소 Get방식 에서 접근을 막겠다. resources 접근제한(css,doc,img 등) Dispatcher이 관리를 안함.-->
-	<resources mapping="/css/**" location="/resources/css/board/" />
-	<resources mapping="/img/**" location="/resources/img/" />
-	<resources mapping="/js/**" location="/resources/js/board/" />
+	<mvc:resources mapping="/css/**" location="/resources/css/board/" />
+	<mvc:resources mapping="/img/**" location="/resources/img/" />
+	<mvc:resources mapping="/js/**" location="/resources/js/board/" />
 
 	<!-- view 경로 지정 -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -26,6 +28,21 @@
 	<!-- controller 따로 dao,service 따로 했지만 지금은 그냥 함. -->
 	<context:component-scan base-package="com.kitri.cafe" />
 	
+	<!-- 한글설정 어노테이션 방법도 있음.-->
+	<!-- @responsebody할때 한글 깨짐 현상 / ajax에서 받아오고 띄워줄때. -->
+	<!-- beans가 붙는 이유는 맨 위에 beans설정함.(xmlns:beans="http://www.springframework.org/schema/beans") -->
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<beans:bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<beans:property name="supportedMediaTypes">
+					<beans:list>
+						<beans:value>text/html;charset=utf-8</beans:value>
+						<beans:value>application/json;charset=utf-8</beans:value>
+					</beans:list>
+				</beans:property>
+			</beans:bean> 
+		</mvc:message-converters>
+	</mvc:annotation-driven>
 	
 	
 </beans:beans>

@@ -30,6 +30,7 @@
 				<value>/WEB-INF/mybatis/mapper_admin_board.xml</value> <!-- wapcontent가 webapp임 맨처음 /면 webapp부터 -->
 				<value>/WEB-INF/mybatis/mapper_admin_reboard.xml</value>
 				<value>/WEB-INF/mybatis/mapper_common.xml</value>
+				<value>/WEB-INF/mybatis/mapper_memo.xml</value>
 			</list>
 		</property>
 	</bean>
