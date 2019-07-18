@@ -34,7 +34,7 @@ $(document).ready(function(){
 		</c:if>
 			<!-- 글쓰기로 바로 가지 않고 글목록 부터 가게 만들어두었음. 시험용으로 write로 함. -->
 			<!-- board.control = 1~4 그냥 게시판 나머지 5,6,7은 다른 게시판 key word= 검색 내가 작성한 값-->
-			<a href="${root }/${board.control}/list?bcode=${board.bcode}&pg=1&key=&word="> 
+			<a href="${root }/${board.control}/write?bcode=${board.bcode}&pg=1&key=&word="> 
 				${board.bname}
 			</a>
 			

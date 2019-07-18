@@ -14,12 +14,17 @@
 	<!-- 웹이 아닌것들은 root 웹인것들은 servlet -->
 	
 	<!-- 데이터베이스 설정 -->
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver"></property>
 		<property name="url" value="jdbc:oracle:thin:@192.168.14.52:1521:orcl"></property>
 		<property name="username" value="kitri"></property>
 		<property name="password" value="kitri"></property>
-	</bean>
+	</bean> -->
+	<!-- DI 방식. -->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+      <property name="jndiName" value="java:comp/env/jdbc/cafe"/>
+   	</bean>
+	
 	
 	<!-- jdbc 연결을 class를 따로 생성하지 않고 spring에 위임 ex)membermybatis에서 MyBatisConfiguration.class -->
 	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -31,6 +36,7 @@
 				<value>/WEB-INF/mybatis/mapper_admin_reboard.xml</value>
 				<value>/WEB-INF/mybatis/mapper_common.xml</value>
 				<value>/WEB-INF/mybatis/mapper_memo.xml</value>
+				<value>/WEB-INF/mybatis/mapper_album.xml</value>
 			</list>
 		</property>
 	</bean>

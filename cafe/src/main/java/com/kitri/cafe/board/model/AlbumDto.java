@@ -7,7 +7,7 @@ public class AlbumDto extends BoardDto{
 	private String orignPicture;
 	private String savePicture;
 	private String saveFolder;
-	private int type;
+	private int type; // 가로냐 세로냐
 	
 	public int getAseq() {
 		return aseq;
